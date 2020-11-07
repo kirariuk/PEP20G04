@@ -1,0 +1,147 @@
+# Homework 2
+# Prove "and" operation takes precedence over "or" operation by setting parentheses in (False or False and True or True)
+print(False or (False and True) or True)
+
+# Homework 3
+
+# Write a function that takes in a list of objects and converts each object in the list into a int.
+# For objects that can't be directly converted to int should have there length counted
+# The function will return a list with a int values ordered from largest to smallest.
+# example [1, True, '123', False, 6, ()] will be transformed into [123, 6, 1, 1, 0, 0]
+
+def ordered_ints(list_of_objects: list):
+    nlst = []
+    for n in range(0, len(list_of_objects)):
+        if type(list_of_objects[n]) == int:
+            nlst.append(list_of_objects[n])
+        elif type(list_of_objects[n]) == str:
+            nlst.append(int(list_of_objects[n]))
+        elif list_of_objects[n] == True:
+            nlst.append(1)
+        else:
+            nlst.append(0)
+        return sorted(nlst, reverse=True)
+
+        l1 = [1, True, '123', False, 6, ()]
+        print(ordered_ints(l1))
+
+
+print(ordered_ints([1, True, '123', False, 6, ()]))
+
+
+# For recursive functions try reading the articles below if you find need more information
+# After reading the above articles try creating a function to calculate the series (1^2)+(2^2)+(3^2)...(n^2)
+# The function will receive an int that indicate the number of iterations, or how many times we have (x^2)+
+# when resolving try using this logic: 1^2+2^2 is 1^2+(1^2+1^2)^2
+
+def sum_of_square(n: int):
+    if n >= 1:
+
+        if n == 1:              
+            return 1
+        return n ** 2 + sum_of_square(n-1)
+
+    else:
+        return 'n too small'
+
+print(sum_of_square(7))
+
+# Write a function that will calculate factorial of numbers squared.
+# For n = 3 the function should calculate (1^2)*(2^2)*(3^2)
+
+
+def factorial_of_squares(n: int):
+    if n >= 1:
+
+        if n == 1:
+            return 1
+        return (n ** 2) * factorial_of_squares(n-1)
+
+    else:
+        return 'n too small'
+
+print(factorial_of_squares(3))
+
+# Write a function that takes in a string as argument and returns a tuple after performing the following actions:
+# - the string is split after the first encountered space.
+# - all letters in the first half will be transformed to upper case letters
+# - all characters that are not lower case letters in the second half will be replaced with "_"
+# - returned tuple contains the two processed strings
+# example: "1234567a Text to te5t" will become  ("1234567A", "_ext_to_te_t")
+
+def process_text(text: str):
+    m=len(text)
+    text0 = ''
+
+    for n in range(0,m):
+
+        if text[n] == ' ':
+            k = n
+            break
+
+    text1 = text[0:k].upper()
+
+    for i in range(k+1, m):
+
+        if text[n].islower():
+            text0 = text0 + text[n]
+
+        else:
+            text0 = text0 + '_'
+
+    return (text1, text0)
+
+print(process_text('1234567a Text to te5t'))
+
+# Homework 4
+
+# Create a function (build) that takes 3 int arguments (a, b, c) and return a function (response) that takes one int
+# argument (x) and calculates ax^2+bx+c
+
+def build(a, b, c):
+    def response(x):
+        return a * (x ** 2) + b * x + c
+    return response
+
+functie = build(3, 5, 6)
+print(functie(2))
+
+# Create a list of response functions by calling build function with the arguments (1,-2,3), (2,-4,4), (3,-6,5)
+list_of_functions = []
+
+for a, b, c in ((1, -2, 2), (2, -4, 4), (3, -6, 6)):
+    list_of_functions.append(build(a, b, c))
+
+print(list_of_functions)
+
+# Create a dictionary that contains the result functions as keys and as values the list of results from calling that
+# function with x in range -10, 10 as value
+
+dict_of_results = {}
+
+for fun in list_of_functions:
+    list_of_results = [fun(x) for x in range(-10, 10)]
+    dict_of_results.update({fun : list_of_results})
+
+print(dict_of_results)
+
+# Check dict_of_results and determine which function has the smallest value in the list of values
+
+function_with_smallest_result = None
+smallest_value = None
+contor = 9999999
+
+for fun, values in dict_of_results.items():
+
+    for n in values:
+
+        if n < contor:
+            contor = n
+            smallest_value = n
+            function_with_smallest_result = fun
+
+print(function_with_smallest_result, smallest_value)
+
+# Call function_with_smallest_result with argument x = 0 and print the returned value (you should get 2)
+
+print(function_with_smallest_result(0))
